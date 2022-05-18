@@ -1,0 +1,274 @@
+%% Set Script
+clear all
+close all
+clc
+%startup_rvc
+set(0,'DefaultFigureWindowStyle','docked')
+hold on
+
+%% Variables
+workspace = [-3 3 -2 2 0 4];  %define figure workspace
+scale = 100;
+scale1 = 0.5;
+
+
+Cap1 = transl (0,0,0); %% Make this cap R
+Cap2 = transl (0,0,0); %% Make this cap G
+Cap3 = transl (0,0,0); %% Make this cap B
+
+% ammend 
+initialPositionUR3 =transl(0.4,-0.3,0);    
+ur3q_i = [0 -pi/2 pi/2 -pi/2 -pi/2 0];% orientation of the start joint position UR3
+
+
+GreenContainer = transl (0,0,0);
+BlueContainer = transl (0,0,0);
+RedContainer = transl (0,0,0);
+Sensor = transl (0,0,0) * trotz(pi/2);
+Frequency1 = 1000; %Red
+Frequency2 = 500;  %Blue    
+Frequency3 = 150;  %Green
+
+Cap1F = Frequency1;
+Cap2F = Frequency2;
+Cap3F = Frequency3;
+
+Option = 0;
+
+
+RobotTag = 'Robot_DoBot';
+
+
+% create objects either using varaible previosuly defined  or transl
+surf([-3,-3;3,3],[-3,3;-3,3],[0.01,0.01;0.01,0.01],'CData',imread('polishedConcreteFloor.jpeg'),'FaceColor','texturemap');
+surf([3,-3], [-3,-3], [4,4;0.01,0.01],'CData',imread('cartoonwall3.jpg'),'FaceColor','texturemap');
+surf([-3,-3], [-3,3], [0.01,0.01;2,2],'CData',imread('cartoonwall3.jpg'),'FaceColor','texturemap');
+% surf([1.5,1.7], [-2,-2], [0.25,0.25;0.5,0.5],'CData',imread('Danger.jpg'),'FaceColor','texturemap');
+% surf([1.4,1.36], [-2,-2], [0.4,0.4;0.44,0.44],'CData',imread('Emergency_Stop.jpg'),'FaceColor','texturemap');
+
+
+%% Plot PLYs
+
+mesh_Workbench = PlaceObject('WORKBENCH-PLY-SCALED4.ply');
+vertices_Workbench = get(mesh_Workbench,'Vertices');
+transformedVertices_Workbench = [vertices_Workbench,ones(size(vertices_Workbench,1),1)] * transl(0,0.2,0)';
+set(mesh_Workbench, 'Vertices', transformedVertices_Workbench(:, 1:3));
+camlight
+
+mesh_fireExtinguisher = PlaceObject('fire_extinguisher.ply');
+vertices_fireExtinguisher = get(mesh_fireExtinguisher,'Vertices');
+transformedVertices_fireExtinguisher = [vertices_fireExtinguisher,ones(size(vertices_fireExtinguisher,1),1)] * transl(-1.5,1.5,0.45)';
+set(mesh_fireExtinguisher, 'Vertices', transformedVertices_fireExtinguisher(:, 1:3));
+camlight
+
+mesh_colourSensor = PlaceObject('colourSensor2.ply');
+vertices_colourSensor = get(mesh_colourSensor,'Vertices');
+transformedVertices_colourSensor = [vertices_colourSensor,ones(size(vertices_colourSensor,1),1)] * transl(0.1,0,0.87)';
+set(mesh_colourSensor, 'Vertices', transformedVertices_colourSensor(:, 1:3));
+camlight
+
+mesh_3dPrinter = PlaceObject('3DPrinterPaintedSCALED.ply');
+vertices_3dPrinter = get(mesh_3dPrinter,'Vertices');
+transformedVertices_3dPrinter = [vertices_3dPrinter,ones(size(vertices_3dPrinter,1),1)] * transl(-0.35,0.25,0.87)';
+set(mesh_3dPrinter, 'Vertices', transformedVertices_3dPrinter(:, 1:3));
+camlight
+
+mesh_containerBlue = PlaceObject('ContainerBLUE3.ply');
+vertices_containerBlue = get(mesh_containerBlue,'Vertices');
+transformedVertices_containerBlue = [vertices_containerBlue,ones(size(vertices_containerBlue,1),1)] * transl(0.6,0.5,0.87)';
+set(mesh_containerBlue, 'Vertices', transformedVertices_containerBlue(:, 1:3));
+camlight
+
+mesh_containerRed = PlaceObject('ContainerRED3.ply');
+vertices_containerRed = get(mesh_containerRed,'Vertices');
+transformedVertices_containerRed = [vertices_containerRed,ones(size(vertices_containerRed,1),1)] * transl(0.4,0.5,0.87)';
+set(mesh_containerRed, 'Vertices', transformedVertices_containerRed(:, 1:3));
+camlight
+
+mesh_containerGreen = PlaceObject('ContainerGREEN3.ply');
+vertices_containerGreen = get(mesh_containerGreen,'Vertices');
+transformedVertices_containerGreen = [vertices_containerGreen,ones(size(vertices_containerGreen,1),1)] * transl(0.2,0.5,0.87)';
+set(mesh_containerGreen, 'Vertices', transformedVertices_containerGreen(:, 1:3));
+camlight
+
+
+
+
+
+%Oil Caps
+
+mesh_oilCapRed = PlaceObject('OilcapREDSCALED.ply');
+vertices_oilCapRed = get(mesh_oilCapRed,'Vertices');
+transformedVertices_oilCapRed = [vertices_oilCapRed,ones(size(vertices_oilCapRed,1),1)] * transl(-0.63,0.24,0.938)';
+set(mesh_oilCapRed, 'Vertices', transformedVertices_oilCapRed(:, 1:3));
+camlight
+
+
+
+mesh_oilCapBlue = PlaceObject('OilcapBLUESCALED.ply');
+vertices_oilCapBlue = get(mesh_oilCapBlue,'Vertices');
+transformedVertices_oilCapBlue = [vertices_oilCapBlue,ones(size(vertices_oilCapBlue,1),1)] * transl(-0.27,0.24,0.938)';
+set(mesh_oilCapBlue, 'Vertices', transformedVertices_oilCapBlue(:, 1:3));
+camlight
+
+
+mesh_oilCapGreen = PlaceObject('OilcapGREENSCALED.ply');
+vertices_oilCapGreen = get(mesh_oilCapGreen,'Vertices');
+transformedVertices_oilCapGreen = [vertices_oilCapGreen,ones(size(vertices_oilCapGreen,1),1)] * transl(0.09,0.24,0.938)';
+set(mesh_oilCapGreen, 'Vertices', transformedVertices_oilCapGreen(:, 1:3));
+camlight
+
+
+    %% DH parameters taken from Universal robots spec sheet 
+            L1 = Link('d', 0.139, 'a', 0, 'alpha', pi/2, 'qlim', [-2*pi, 2*pi]);
+            L2 = Link('d', 0,'a', 0.138, 'alpha', 0, 'qlim', [-2*pi, 2*pi]);
+            L3 = Link('d', 0, 'a', 0.164, 'alpha', 0, 'qlim', [-2*pi, 2*pi]);
+            L4 = Link('d', 0, 'a', 0.065, 'alpha', -pi/2, 'qlim', [-2*pi, 2*pi]);
+            L5 = Link('d', -0.07, 'a', 0, 'alpha', 0, 'qlim', [-2*pi, 2*pi]);
+
+    
+    % Fix robot base rotation to a specific orientation
+    rotateZ = trotz(pi);
+    BaseStart = [rotateZ(1:4, 1:3) initialPositionUR3(1:4, 4)];
+    
+    Robot_DoBot = SerialLink([L1 L2 L3 L4 L5],'name',RobotTag, 'base', transl (0.4,0.24,0.87));
+    qguess = [0 pi/6 -pi/2 pi/3 0];
+
+
+
+
+    %% Plot the UR3 design
+    for linkno = 0:Robot_DoBot.n
+        [ faceData, vertexData, plyData{linkno+1} ] = plyread(['DobotLink',num2str(linkno),'.ply'],'tri'); 
+        Robot_DoBot.faces{linkno+1} = faceData;
+        Robot_DoBot.points{linkno+1} = vertexData;
+    end
+    
+    % Display robot
+    Robot_DoBot.plotopt3d = {'wrist', 'xyz', 'arrow'};
+    Robot_DoBot.plot3d(qguess, 'workspace',[-2 2 -2 2 0 2], 'scale', scale)
+    if isempty(findobj(get(gca,'Children'),'Type','Light'))
+        camlight
+    end
+     Robot_DoBot.delay = 0;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+% %% Senserange
+% picklocation = transl(0.09,0.24,0.938)
+% cap1_1 = mesh_oilCapGreen
+% cap2_1 = mesh_oilCapBlue
+% cap3_1 = mesh_oilCapRed
+% 
+% if Cap1_1  Cap2_1  Cap3_1 == picklocation
+%     disp("Cap Located")
+%     senserange == true;
+% else 
+%     senserange == false;
+% end
+% 
+% 
+% %% Sensor
+% if senserange == true
+%     if Frequency <= 250
+%         disp('Green Cap')
+%         Option = 1
+%     end
+%     if Frequency <= 750 
+%         disp('Blue Cap')
+%         Option = 2
+%     end 
+%     if Frequency > 750 
+%         disp('Red Cap')
+%         Option = 3
+%     end
+% end
+% 
+% 
+% 
+% 
+% 
+% %% Robot arm move
+% x = Robot_DoBot.getpos;
+% q1 = x;
+% steps = 25;
+% 
+% Robot_DoBot.fkine(BlueContainer)
+% 
+% if Option == 1
+%     q2 = Robot_DoBot.ikcon(GreenContainer, qguess);
+% end
+% if Option == 2
+%     q2 = Robot_DoBot.ikcon(BlueContainer, qguess);
+% end
+% if Option == 3
+%     q2 = Robot_DoBot.ikcon(RedContainer, qguess);
+% end
+% 
+% qMatrix = jtraj(q1,q2,steps);
+% 
+% for i =  1:steps                                %Animates the both robot movements simultanously from steps 1 to N
+%    Robot_DoBot.animate(qMatrix(i,:))
+% end
+% 
+% Robot_DoBot.fkine(Robot_DoBot.getpos)
+
+
+
+%% Conveyor animation 
+
+steps = 12;
+r = -0.63;
+b = -0.27;
+
+display('Press enter to continue');       %Safety feature to not allow robots to move until people are clear of work zone
+pause;
+
+
+for i =  1:steps
+
+    r = r + 0.03
+    b = b + 0.03
+    
+     try delete (mesh_oilCapRed);
+         delete (mesh_oilCapBlue);
+     end
+
+     CapRS = transl (r,0.24,0.938);
+     CapBS = transl (b,0.24,0.938);
+
+mesh_oilCapRed = PlaceObject('OilcapREDSCALED.ply');
+vertices_oilCapRed = get(mesh_oilCapRed,'Vertices');
+transformedVertices_oilCapRed = [vertices_oilCapRed,ones(size(vertices_oilCapRed,1),1)] * CapRS';
+set(mesh_oilCapRed, 'Vertices', transformedVertices_oilCapRed(:, 1:3));
+% camlight
+
+
+mesh_oilCapBlue = PlaceObject('OilcapBLUESCALED.ply');
+vertices_oilCapBlue = get(mesh_oilCapBlue,'Vertices');
+transformedVertices_oilCapBlue = [vertices_oilCapBlue,ones(size(vertices_oilCapBlue,1),1)] * CapBS';
+set(mesh_oilCapBlue, 'Vertices', transformedVertices_oilCapBlue(:, 1:3));
+%camlight
+
+
+
+% camlight
+
+
+ pause(0.01)
+
+
+
+
+
+end     
